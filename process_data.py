@@ -45,7 +45,14 @@ def load_data(messages_filepath, categories_filepath):
 def clean_data(df):
     #dropping duplicates
     df2 = df.drop_duplicates (subset = ['message'])
-    return df2
+
+    #dropping 'child_alone'
+    df3 = df2.drop('child_alone', axis = 1)
+
+    #slicing so to get a dataframe that contains only related !=2
+    df4 = df3 [df3.related !=2]
+
+    return df4
 
 def save_data(df, database_filepath):
     engine = create_engine('sqlite:///'+ str (database_filepath))

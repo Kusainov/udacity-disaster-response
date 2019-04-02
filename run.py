@@ -39,29 +39,82 @@ model = joblib.load("classifier.pkl")
 def index():
 
     # extract data needed for visuals
-    # TODO: Below is an example - modify to extract data for your own visuals
     genre_counts = df.groupby('genre').count()['message']
     genre_names = list(genre_counts.index)
 
+    #genre and aid_related status
+    aid_rel1 = df[df['aid_related']==1].groupby('genre').count()['message']
+    aid_rel0 = df[df['aid_related']==0].groupby('genre').count()['message']
+    genre_names = list(aid_rel1.index)
+
+    # let's calculate distribution of classes with 1
+    class_distr1 = df.drop(['id', 'message', 'original', 'genre'], axis = 1).sum()/len(df)
+
+    #sorting values in ascending
+    class_distr1 = class_distr1.sort_values(ascending = False)
+
+    #series of values that have 0 in classes
+    class_distr0 = (class_distr1 -1) * -1
+    class_name = list(class_distr1.index)
+
+
     # create visuals
-    # TODO: Below is an example - modify to create your own visuals
     graphs = [
         {
             'data': [
                 Bar(
                     x=genre_names,
-                    y=genre_counts
+                    y=aid_rel1,
+                    name = 'Aid related'
+
+                ),
+                Bar(
+                    x=genre_names,
+                    y= aid_rel0,
+                    name = 'Aid not related'
                 )
             ],
 
             'layout': {
-                'title': 'Distribution of Message Genres',
+                'title': 'Distribution of message by genre and \'aid related\' class ',
                 'yaxis': {
                     'title': "Count"
                 },
                 'xaxis': {
                     'title': "Genre"
-                }
+                },
+                'barmode' : 'group'
+            }
+        },
+        {
+            'data': [
+                Bar(
+                    x=class_name,
+                    y=class_distr1,
+                    name = 'Class = 1'
+                    #orientation = 'h'
+                ),
+                Bar(
+                    x=class_name,
+                    y=class_distr0,
+                    name = 'Class = 0',
+                    marker = dict(
+                            color = 'rgb(212, 228, 247)'
+                                )
+                    #orientation = 'h'
+                )
+            ],
+
+            'layout': {
+                'title': 'Distribution of labels within classes',
+                'yaxis': {
+                    'title': "Distribution"
+                },
+                'xaxis': {
+                    'title': "Class",
+            #        'tickangle': -45
+                },
+                'barmode' : 'stack'
             }
         }
     ]
