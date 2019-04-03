@@ -6,6 +6,14 @@ Using the web app an emergency worker can input a new message and get classifica
 
 The web app also displays visualizations of the data.
 
+## Web application screenshots
+
+![file1](https://github.com/Kusainov/udacity-disaster-response/blob/master/file1.JPG)
+
+![file2](https://github.com/Kusainov/udacity-disaster-response/blob/master/file2.JPG)
+
+![file3](https://github.com/Kusainov/udacity-disaster-response/blob/master/file3.JPG)
+
 ### Install
 This project requires Python 3.x and the following Python libraries installed:
 
