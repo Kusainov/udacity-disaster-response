@@ -1,28 +1,53 @@
 # Disaster Response ETL, ML pipelines and Web application.
 
+### Motivation
+The purpose of the project is to build a model for an API that classifies disaster messages.
+Using the web app an emergency worker can input a new message and get classification results in several categories so to have an idea what kind of help is needed: "water", "shelter", "food", etc.  
 
-This repository contains following files:
+The web app also displays visualizations of the data.
 
+### Install
+This project requires Python 3.x and the following Python libraries installed:
 
+1. NumPy
+2. Pandas
+3. Matplotlib
+4. Json
+5. Plotly
+6. Nltk
+7. Flask
+8. Sklearn
+9. Sqlalchemy
+10. Sys
+11. Re
+12. Pickle
 
-### Command line applications train.py and predict.py
+You will also need to have software installed to run and execute an iPython Notebook
 
-For command line applications there is an option to select either Alexnet or VGG13 models.
+### Code and data
 
-Following arguments mandatory or optional for train.py
+-  process_data.py: This code extracts data from both CSV files: messages.csv (containing message data) and categories.csv (classes of messages) and creates an SQLite database containing a merged and cleaned version of this data.
+-  train_classifier.py: This code takes the SQLite database produced by process_data.py as an input and uses the data contained within it to train and tune a ML model for categorizing messages. The output is a pickle file containing the fitted model. Test evaluation metrics are also printed as part of the training process.
+-  ETL Pipeline Preparation.ipynb: The code and analysis contained in this Jupyter notebook was used in the development of process_data.py. process_data.py  automates this notebook.
+-  ML Pipeline Preparation.ipynb: The code and analysis contained in this Jupyter notebook was used in the development of train_classifier.py. In particular, it contains the analysis used to tune the ML model and determine which algorithm to use. train_classifier.py automates the model fitting process contained in this notebook.
+-  disaster_messages.csv, disaster_categories.csv contain sample messages (real messages that were sent during disaster events) and categories datasets in csv format.
+-  templates folder: This folder contains all of the files necessary to run and render the web app.
+-  custom_transformer.py contains custom functions that were used in ML Pipeline Preparation.ipynb so to find best way of model tuning.
 
-1.	'data_dir'. 'Provide data directory. Mandatory argument', type = str
-2.	'--save_dir'. 'Provide saving directory. Optional argument', type = str
-3.	'--arch'. 'Vgg13 can be used if this argument specified, otherwise Alexnet will be used', type = str
-4.	'--lrn'. 'Learning rate, default value 0.001', type = float
-5.	'--hidden_units'. 'Hidden units in Classifier. Default value is 2048', type = int
-6.	'--epochs'. 'Number of epochs', type = int
-7.	'--GPU'. "Option to use GPU", type = str
+### Run
+In a terminal navigate to the top-level project directory udacity-disaster-response/ (that contains this README) and run commands in the following sequence:
 
-Following arguments mandatory or optional for predict.py
+-  python process_data.py disaster_messages.csv disaster_categories.csv DisasterResponse.db  
+-  python train_classifier.py DisasterResponse.db classifier.pkl
+-  python run.py
 
-1.	'image_dir'. 'Provide path to image. Mandatory argument', type = str
-2.	'load_dir'. 'Provide path to checkpoint. Mandatory argument', type = str
-3.	'--top_k'. 'Top K most likely classes. Optional', type = int
-4.	'--category_names'. 'Mapping of categories to real names. JSON file name to be provided. Optional', type = str
-5.	'--GPU'. "Option to use GPU. Optional", type = str
+Run the web application
+Go to http://0.0.0.0:3001/ (if facing problems try http://localhost:3001 in a browser)
+
+In the web app you may input any text message (English) and it will categorize it among 35 classes.
+
+### Data observations
+As can be seen from test data visualization most of the classes (categories) are highly imbalanced. This affects model F1 prediction score. One using this project should take this into consideration and apply measures like synthetic data generation, model selection and parameters fine-tuning, etc.     
+
+### License
+Code released under the MIT License.
